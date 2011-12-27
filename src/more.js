@@ -65,6 +65,7 @@ fs.readFile(source, 'utf-8', function(err, data) {
     
     var transform = function(tree) {
         var variables;
+        var mixins;
         var nested = [];
 
         var findVariables = function(tree) {
@@ -91,8 +92,49 @@ fs.readFile(source, 'utf-8', function(err, data) {
             return line;
         };
 
+        var findMixins = function(tree) {
+            var ret = {};
+
+            var parseParams = function(line) {
+                var parts;
+
+                line = line.trim();
+                line = line.substr(1, line.length - 2);
+                parts = line.split(',');
+
+                return parts.map(function(k) {
+                    var segments = k.split(':');
+
+                    return {name: segments[0], value: segments[1]}
+                });
+            };
+
+            tree.forEach(function(child) {
+                if (child.name.search('mixin ') == 0) {
+                    var parts = child.name.split(' ');
+                    var name = parts[1];
+                    var params = parseParams(parts.slice(2).join('')); 
+
+                    ret[child.name.split(' ')[1].trim()] = {
+                        children: child.children,
+                        params: params
+                    };
+
+                    // mark as deleted so we can avoid this later
+                    child.deleted = true;
+                }
+            });
+
+            return ret;
+        };
+        mixins = findMixins(tree);
+
         var recursion = function(tree, i) {
             return tree.map(function(child) {
+                if(child.deleted) {
+                    return '';
+                }
+                
                 var prefix = chars(' ', i * 4);
                 var ret = prefix + replaceVariables(child.name);
 
@@ -134,7 +176,7 @@ fs.readFile(source, 'utf-8', function(err, data) {
             ret.push(transform(nested));
         }
 
-        return ret;
+        return ret.filter(function(o) {return o;});
     };
 
     var parts = analyze(data.split('\n'));

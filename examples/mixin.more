@@ -4,12 +4,12 @@ mixin roundedCorners (@radius: 5px)
     -moz-border-radius: @radius
 
 #header
-    with roundedCorners
+    roundedCorners
 
 #footer
-    with roundedCorners(10px)
+    roundedCorners: 10px
 
 @a: 20px
 #content
-    with roundedCorners(@a)
+    roundedCorners: @a
 
