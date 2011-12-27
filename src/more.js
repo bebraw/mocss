@@ -20,17 +20,18 @@ fs.readFile(source, 'utf-8', function(err, data) {
 
         return input.filter(function(elem) {return elem.l || elem.r;}).
                 map(function(line) {
-            parent = parents[parents.length - 1] || {ind: 0};
-
             elem = {name: line.r, children: [], ind: line.l.length};
+            parent = parents[parents.length - 1] || {ind: 0};
 
             if (parent.ind == elem.ind) {
                 parents.pop();
                 parent = parents[parents.length -1] || {ind: 0};
             }
+            elem.parent = parent;
 
             if (elem.ind == 0) {
                 parents = [elem];
+                elem.parent = {name: null};
                 return elem;
             }
             else if (parent.ind < elem.ind) {
@@ -44,16 +45,16 @@ fs.readFile(source, 'utf-8', function(err, data) {
         i = i || 0;
 
         tree.forEach(function(k) {
-            if (k.children.length > 0) {
-                console.log('depth: ' + i);
-                console.log(k);
-                
-                printTree(k.children, i + 1);
-            }
+            console.log('depth: ' + i);
+            console.log('name: ' + k.name);
+            console.log('parent: ' + k.parent.name);
+
+            printTree(k.children, i + 1);
         });
     }
 
     var transform = function(lines) {
+        // TODO!
         var bracketFound = false;
 
         return lines.map(function(line) {
