@@ -64,11 +64,37 @@ fs.readFile(source, 'utf-8', function(err, data) {
     };
     
     var transform = function(tree) {
+        var variables;
         var nested = [];
+
+        var findVariables = function(tree) {
+            var ret = {};
+            
+            tree.forEach(function(child) {
+                if (child.name[0] == '@') {
+                    var parts = child.name.split(':');
+                    ret[parts[0]] = parts[1].trim();
+                }
+            });
+
+            return ret;
+        };
+        variables = findVariables(tree);
+
+        var replaceVariables = function(line) {
+            for(var k in variables) {
+                var v = variables[k];
+
+                line = line.replace(k, v);
+            }
+
+            return line;
+        };
+
         var recursion = function(tree, i) {
             return tree.map(function(child) {
                 var prefix = chars(' ', i * 4);
-                var ret = prefix + child.name;
+                var ret = prefix + replaceVariables(child.name);
 
                 if (child.children.length) {
                     if (child.parent) {
