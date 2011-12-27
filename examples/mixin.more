@@ -1,0 +1,15 @@
+mixin roundedCorners (@radius: 5px)
+    border-radius: @radius
+    -webkit-border-radius: @radius
+    -moz-border-radius: @radius
+
+#header
+    with roundedCorners
+
+#footer
+    with roundedCorners(10px)
+
+@a: 20px
+#content
+    with roundedCorners(@a)
+
