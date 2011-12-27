@@ -82,9 +82,9 @@ fs.readFile(source, 'utf-8', function(err, data) {
         };
         variables = findVariables(tree);
 
-        var replaceVariables = function(line) {
-            for(var k in variables) {
-                var v = variables[k];
+        var replaceVariables = function(line, vars) {
+            for(var k in vars) {
+                var v = vars[k];
 
                 line = line.replace(k, v);
             }
@@ -131,9 +131,22 @@ fs.readFile(source, 'utf-8', function(err, data) {
             return ret;
         };
         mixins = findMixins(tree);
-        console.log(mixins.roundedCorners);
 
-        var recursion = function(tree, i) {
+        var setParams = function(params, values) {
+            values = values || [];
+            var ret = {};
+            var i = 0;
+
+            for(var k in params) {
+                ret[k] = values[i] || params[k];
+
+                i++;
+            };
+
+            return ret;
+        };
+
+        var recursion = function(tree, i, vars) {
             return tree.map(function(child) {
                 if (child.deleted) {
                     return '';
@@ -143,17 +156,19 @@ fs.readFile(source, 'utf-8', function(err, data) {
                 var parts = child.name.split(':');
                 var begin = parts[0];
                 if (begin in mixins) {
-                    var params = parts[1];
+                    var values = parts[1] || '';
+                    values = values.trim().split(' ');
                     var mixin = mixins[begin];
+                    var mixinParams = setParams(mixin.params, values);
 
-                    // TODO: local parameter scope
-                    ret += recursion(mixin.children, i).join('\n'); 
+                    ret += recursion(mixin.children, i, mixinParams).join('\n'); 
 
                     return ret;
                 }
 
                 var prefix = chars(' ', i * 4);
-                ret = prefix + replaceVariables(child.name);
+                var name = replaceVariables(replaceVariables(child.name, vars), variables);
+                ret = prefix + name;
 
                 if (child.children.length) {
                     if (child.parent) {
