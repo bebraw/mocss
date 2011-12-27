@@ -39,7 +39,7 @@ fs.readFile(source, 'utf-8', function(err, data) {
                 parent.children.push(elem);
             }
         }).filter(function(elem) {return elem;});
-    }
+    };
 
     var printTree = function(tree, i) {
         i = i || 0;
@@ -51,7 +51,7 @@ fs.readFile(source, 'utf-8', function(err, data) {
 
             printTree(k.children, i + 1);
         });
-    }
+    };
 
     var chars = function(c, n) {
         var ret = '';
@@ -61,7 +61,7 @@ fs.readFile(source, 'utf-8', function(err, data) {
         }
         
         return ret;
-    }
+    };
     
     var transform = function(tree) {
         var nested = [];
