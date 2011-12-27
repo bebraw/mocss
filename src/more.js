@@ -96,17 +96,20 @@ fs.readFile(source, 'utf-8', function(err, data) {
             var ret = {};
 
             var parseParams = function(line) {
+                var ret = {};
                 var parts;
 
                 line = line.trim();
                 line = line.substr(1, line.length - 2);
                 parts = line.split(',');
 
-                return parts.map(function(k) {
+                parts.forEach(function(k) {
                     var segments = k.split(':');
 
-                    return {name: segments[0], value: segments[1]}
+                    ret[segments[0]] = segments[1];
                 });
+
+                return ret;
             };
 
             tree.forEach(function(child) {
@@ -128,15 +131,29 @@ fs.readFile(source, 'utf-8', function(err, data) {
             return ret;
         };
         mixins = findMixins(tree);
+        console.log(mixins.roundedCorners);
 
         var recursion = function(tree, i) {
             return tree.map(function(child) {
-                if(child.deleted) {
+                if (child.deleted) {
                     return '';
                 }
-                
+
+                var ret = '';
+                var parts = child.name.split(':');
+                var begin = parts[0];
+                if (begin in mixins) {
+                    var params = parts[1];
+                    var mixin = mixins[begin];
+
+                    // TODO: local parameter scope
+                    ret += recursion(mixin.children, i).join('\n'); 
+
+                    return ret;
+                }
+
                 var prefix = chars(' ', i * 4);
-                var ret = prefix + replaceVariables(child.name);
+                ret = prefix + replaceVariables(child.name);
 
                 if (child.children.length) {
                     if (child.parent) {
