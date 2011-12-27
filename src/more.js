@@ -31,7 +31,7 @@ fs.readFile(source, 'utf-8', function(err, data) {
 
             if (elem.ind == 0) {
                 parents = [elem];
-                elem.parent = {name: null};
+                elem.parent = null;
                 return elem;
             }
             else if (parent.ind < elem.ind) {
@@ -47,37 +47,74 @@ fs.readFile(source, 'utf-8', function(err, data) {
         tree.forEach(function(k) {
             console.log('depth: ' + i);
             console.log('name: ' + k.name);
-            console.log('parent: ' + k.parent.name);
+            console.log('parent: ' + k.parent);
 
             printTree(k.children, i + 1);
         });
     }
 
-    var transform = function(lines) {
-        // TODO!
-        var bracketFound = false;
+    var chars = function(c, n) {
+        var ret = '';
 
-        return lines.map(function(line) {
-            if (line.l) {
-                return line.l + line.r + ';';
-            }
-            else if (line.r) {
-                bracketFound = true;
-                
-                return line.r + ' {';
-            }
-            else if (bracketFound) {
-                bracketFound = false;
+        for(var i = 0; i < n; i++) {
+            ret += c;
+        }
+        
+        return ret;
+    }
+    
+    var transform = function(tree) {
+        var nested = [];
+        var recursion = function(tree, i) {
+            return tree.map(function(child) {
+                var prefix = chars(' ', i * 4);
+                var ret = prefix + child.name;
 
-                return '}';
-            }
-        });
+                if (child.children.length) {
+                    if (child.parent) {
+                        // going to handle these later separately
+                        // we'll lose positional data but it's
+                        // a bit easier this way
+                        // alternatively could try to sort attributes
+                        // within blocks and then render nesting here
+                        nested.push(child);
+                        ret = '';
+                    }
+                    else {
+                        ret += ' {\n' + recursion(child.children, i + 1).join('\n') + '\n}\n';
+                    }
+                }
+                else {
+                    ret += ';';
+                }
+
+                return ret;
+            });
+        };
+        var ret = recursion(tree, 0);
+
+        var getFullName = function(child) {
+            return child.parent? getFullName(child.parent) + ' ' + child.name: child.name;
+        };
+
+        if (nested.length) {
+            nested = nested.map(function(child) {
+                child.name = getFullName(child);
+                child.parent = null;
+
+                return child;
+            });
+
+            ret.push(transform(nested));
+        }
+
+        return ret;
     };
 
     var parts = analyze(data.split('\n'));
     var tree = treeify(parts);
-    printTree(tree);
     var output = transform(tree).join('\n');
+    console.log(output);
 
     fs.writeFile(target, output, function(err) {
         if (err) throw err;
