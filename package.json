@@ -10,7 +10,7 @@
     },  
 
     "main": "./lib/more.js",
-    "bin": "./bin/morec",
+    "bin": "./bin/more",
 
     "repository": {
         "type": "git",
