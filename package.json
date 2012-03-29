@@ -1,0 +1,32 @@
+{
+    "name": "more.js",
+    "description": "Yet another CSS preprocessor",
+    "author": "Juho Vepsalainen <bebraw@gmail.com>",
+    "version": "0.2.0",
+
+    "dependencies": {
+        "commander": ">= 0.5.2",
+        "suite.js": ">= 0.1.1"
+    },  
+
+    "main": "./lib/more.js",
+    "bin": "./bin/morec",
+
+    "repository": {
+        "type": "git",
+        "url": "https://bebraw@github.com/bebraw/more.git"
+    },  
+
+    "homepage": "https://github.com/bebraw/more.js",
+
+    "bugs": {
+        "url": "https://github.com/bebraw/more.js/issues"
+    },  
+
+    "keywords": ["css", "preprocessor"],
+
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/bebraw/more.js/blob/master/LICENSE"
+    }]  
+}
