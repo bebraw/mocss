@@ -1,3 +1,49 @@
 #!/usr/bin/env node
 var VERSION = '0.2.0';
 
+var path = require('path');
+var fs = require('fs');
+var program = require('commander');
+var more = require('../');
+
+console.log('more ' + VERSION + '\n')
+
+program.
+    version(VERSION).
+    option('-i --input <input>', 'input (file/directory)').
+    option('-o --output <output>', 'output directory').
+    option('-s --silent', 'silent').
+    parse(process.argv);
+
+if (!program.input) quit('Missing input');
+if (!program.output) quit('Missing output');
+
+var silent = program.silent;
+
+main();
+
+function main() {
+    if(!path.existsSync(program.output)) fs.mkdirSync(program.output);
+
+    var stats = fs.statSync(program.input);
+    if(stats.isFile()) {
+        more.transform(); // TODO
+    }
+    if(stats.isDirectory()) {
+        var files = fs.readdirSync(program.input);
+
+        files.forEach(function(file) {
+            var p = path.join(program.input, file);
+            var stats = fs.statSync(p);
+
+            if(stats.isFile()) {
+                more.transform(); // TODO
+            }
+        });
+    }
+}
+
+function quit(msg) {
+    console.log(msg);
+    process.exit();
+}
