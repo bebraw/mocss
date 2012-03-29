@@ -18,8 +18,6 @@ program.
 if (!program.input) quit('Missing input');
 if (!program.output) quit('Missing output');
 
-var silent = program.silent;
-
 main();
 
 function main() {
@@ -27,7 +25,9 @@ function main() {
 
     var stats = fs.statSync(program.input);
     if(stats.isFile()) {
-        more.transform(); // TODO
+        var data = fs.readFileSync(program.input, 'utf-8');
+        var result = more.transform(data);
+        write(program.output, program.silent, result, program.input);
     }
     if(stats.isDirectory()) {
         var files = fs.readdirSync(program.input);
@@ -37,10 +37,19 @@ function main() {
             var stats = fs.statSync(p);
 
             if(stats.isFile()) {
-                more.transform(); // TODO
+                var data = f.readFileSync(file, 'utf-8');
+                var result = more.transform(data);
+                write(program.output, program.silent, result, file);
             }
         });
     }
+}
+
+function write(outputDir, silent, data, inputFile) {
+    var target = path.join(outputDir, path.basename(inputFile, '.more') + '.css');
+    fs.writeFileSync(target, data);
+
+    if(!silent) console.log('Wrote ' + target);
 }
 
 function quit(msg) {
