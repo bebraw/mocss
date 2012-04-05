@@ -6,7 +6,7 @@ var fs = require('fs');
 var program = require('commander');
 var more = require('../');
 
-console.log('more ' + VERSION + '\n')
+console.log('mocss ' + VERSION + '\n')
 
 program.
     version(VERSION).
@@ -37,7 +37,7 @@ function main() {
             var stats = fs.statSync(p);
 
             if(stats.isFile()) {
-                var data = f.readFileSync(file, 'utf-8');
+                var data = fs.readFileSync(p, 'utf-8');
                 var result = more.transform(data);
                 write(program.output, program.silent, result, file);
             }
@@ -46,7 +46,7 @@ function main() {
 }
 
 function write(outputDir, silent, data, inputFile) {
-    var target = path.join(outputDir, path.basename(inputFile, '.more') + '.css');
+    var target = path.join(outputDir, path.basename(inputFile, '.mocss') + '.css');
     fs.writeFileSync(target, data);
 
     if(!silent) console.log('Wrote ' + target);
