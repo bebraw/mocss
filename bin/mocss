@@ -21,7 +21,7 @@ if (!program.output) quit('Missing output');
 main();
 
 function main() {
-    if(!path.existsSync(program.output)) fs.mkdirSync(program.output);
+    if(!fs.existsSync(program.output)) fs.mkdirSync(program.output);
 
     var stats = fs.statSync(program.input);
     if(stats.isFile()) {
