@@ -1,58 +1,11 @@
 #!/usr/bin/env node
-var VERSION = '0.2.6';
-
-var path = require('path');
-var fs = require('fs');
-var program = require('commander');
+var ioscript = require('ioscript.js');
 var more = require('../');
 
-console.log('mocss ' + VERSION + '\n')
-
-program.
-    version(VERSION).
-    option('-i --input <input>', 'input (file/directory)').
-    option('-o --output <output>', 'output directory').
-    option('-s --silent', 'silent').
-    parse(process.argv);
-
-if (!program.input) quit('Missing input');
-if (!program.output) quit('Missing output');
-
-main();
-
-function main() {
-    if(!fs.existsSync(program.output)) fs.mkdirSync(program.output);
-
-    var stats = fs.statSync(program.input);
-    if(stats.isFile()) {
-        var data = fs.readFileSync(program.input, 'utf-8');
-        var result = more.transform(data);
-        write(program.output, program.silent, result, program.input);
-    }
-    if(stats.isDirectory()) {
-        var files = fs.readdirSync(program.input);
-
-        files.forEach(function(file) {
-            var p = path.join(program.input, file);
-            var stats = fs.statSync(p);
-
-            if(stats.isFile()) {
-                var data = fs.readFileSync(p, 'utf-8');
-                var result = more.transform(data);
-                write(program.output, program.silent, result, file);
-            }
-        });
-    }
-}
-
-function write(outputDir, silent, data, inputFile) {
-    var target = path.join(outputDir, path.basename(inputFile, '.mocss') + '.css');
-    fs.writeFileSync(target, data);
-
-    if(!silent) console.log('Wrote ' + target);
-}
-
-function quit(msg) {
-    console.log(msg);
-    process.exit();
-}
+ioscript({
+    version: '0.2.6',
+    args: process.argv,
+    inputExtension: 'mocss',
+    outputExtension: 'css',
+    transform: more.transform
+});
