@@ -2,7 +2,7 @@
     "name": "mocss",
     "description": "Yet another CSS preprocessor",
     "author": "Juho Vepsalainen <bebraw@gmail.com>",
-    "version": "0.2.6",
+    "version": "0.3.0",
 
     "dependencies": {
         "ioscript.js": "== 0.2.0",
