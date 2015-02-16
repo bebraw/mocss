@@ -1,36 +1,33 @@
 {
-    "name": "mocss",
-    "description": "Yet another CSS preprocessor",
-    "author": "Juho Vepsalainen <bebraw@gmail.com>",
-    "version": "0.3.0",
-
-    "dependencies": {
-        "ioscript.js": "== 0.2.0",
-        "suite.js": "== 0.1.7"
-    },
-
-    "scripts": {
-        "test": "node tests"
-    },
-
-    "main": "./lib/mocss.js",
-    "bin": "./bin/mocss",
-
-    "repository": {
-        "type": "git",
-        "url": "https://bebraw@github.com/bebraw/mocss.git"
-    },
-
-    "homepage": "https://github.com/bebraw/mocss",
-
-    "bugs": {
-        "url": "https://github.com/bebraw/mocss/issues"
-    },
-
-    "keywords": ["css", "preprocessor"],
-
-    "licenses": [{
-        "type": "MIT",
-        "url": "https://github.com/bebraw/mocss/blob/master/LICENSE"
-    }]
+  "name": "mocss",
+  "description": "Yet another CSS preprocessor",
+  "author": "Juho Vepsalainen <bebraw@gmail.com>",
+  "version": "0.4.0",
+  "dependencies": {
+    "ioscript.js": "== 0.2.0",
+    "suite.js": "== 0.1.7"
+  },
+  "scripts": {
+    "test": "node tests"
+  },
+  "main": "./lib/mocss.js",
+  "bin": "./bin/mocss",
+  "repository": {
+    "type": "git",
+    "url": "https://bebraw@github.com/bebraw/mocss.git"
+  },
+  "homepage": "https://github.com/bebraw/mocss",
+  "bugs": {
+    "url": "https://github.com/bebraw/mocss/issues"
+  },
+  "keywords": [
+    "css",
+    "preprocessor"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bebraw/mocss/blob/master/LICENSE"
+    }
+  ]
 }
