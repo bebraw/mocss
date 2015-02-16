@@ -6,7 +6,11 @@
 
     "dependencies": {
         "ioscript.js": "== 0.2.0",
-        "suite.js": ">= 0.1.7"
+        "suite.js": "== 0.1.7"
+    },
+
+    "scripts": {
+        "test": "node lib/tests"
     },
 
     "main": "./lib/mocss.js",
