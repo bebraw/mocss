@@ -2,7 +2,7 @@
 var suite = require('suite.js');
 
 var analyze = require('../lib/analyze');
-var treeify = require('../lib/treeify');
+var treeify = require('../lib/tree').ify;
 
 
 suite(analyze, [

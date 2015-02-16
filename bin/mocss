@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 var ioscript = require('ioscript.js');
-var more = require('../');
+var mocss = require('../');
 
 ioscript({
     version: '0.3.0',
     args: process.argv,
     inputExtension: 'mocss',
     outputExtension: 'css',
-    transform: more.transform
+    transform: mocss,
 });
