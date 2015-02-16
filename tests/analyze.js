@@ -1,8 +1,11 @@
 'use strict';
-var m = require('./lib');
 var suite = require('suite.js');
 
-suite(m.analyze, [
+var analyze = require('../lib/analyze');
+var treeify = require('../lib/treeify');
+
+
+suite(analyze, [
     [['a']], [{l: '', r: 'a'}],
     [['a', 'b']], [{l: '', r: 'a'}, {l: '', r: 'b'}],
     [['  a']], [{l: '  ', r: 'a'}],
@@ -18,19 +21,5 @@ suite(analyzeAndTreeify, {
 });
 
 function analyzeAndTreeify(a) {
-    return m.treeify(m.analyze([a]));
+    return treeify(analyze([a]));
 }
-
-suite(m.chars, [
-    ['c', 5], 'ccccc',
-    ['a', 2], 'aa'
-]);
-
-suite(m.findVariables, {
-    'a': {},
-    '@a': {},
-    '@a = 2': {},
-    '@a: 2': {'@a': '2'},
-    '@a : 2': {'@a': '2'}
-}, function(a) {return [m.treeify(m.analyze([a]))];});
-
