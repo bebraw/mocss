@@ -1,5 +1,5 @@
 'use strict';
-var m = require('./mocss');
+var m = require('./lib');
 var suite = require('suite.js');
 
 suite(m.analyze, [
