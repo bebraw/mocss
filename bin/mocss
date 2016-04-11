@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var ioscript = require('ioscript.js');
-var mocss = require('../');
+var mocss = require('../lib');
 
 ioscript({
     version: '0.3.0',
