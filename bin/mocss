@@ -1,11 +1,30 @@
 #!/usr/bin/env node
-var ioscript = require('ioscript.js');
-var mocss = require('../lib');
+const fs = require('fs');
+const minimist = require('minimist');
+const mocss = require('../lib');
 
-ioscript({
-    version: '0.3.0',
-    args: process.argv,
-    inputExtension: 'mocss',
-    outputExtension: 'css',
-    transform: mocss,
-});
+main();
+
+function main() {
+  const argv = minimist(process.argv.slice(2));
+
+  if(!argv.input) {
+    return console.error('Missing --input');
+  }
+
+  if(!argv.output) {
+    return console.error('Missing --output');
+  }
+
+  const input = fs.readFileSync(argv.input, {
+    encoding: 'utf-8'
+  });
+
+  fs.writeFile(argv.output, mocss(input), function(err) {
+    if(err) {
+      return console.error(err);
+    }
+
+    console.log('Wrote', argv.output);
+  })
+}
