@@ -4,7 +4,9 @@
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
   "version": "0.4.0",
   "dependencies": {
-    "ioscript.js": "== 0.2.0",
+    "ioscript.js": "== 0.2.0"
+  },
+  "devDependencies": {
     "suite.js": "== 0.1.7"
   },
   "scripts": {
@@ -24,10 +26,5 @@
     "css",
     "preprocessor"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/bebraw/mocss/blob/master/LICENSE"
-    }
-  ]
+  "license": "MIT"
 }
