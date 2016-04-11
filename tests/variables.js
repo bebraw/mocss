@@ -5,11 +5,16 @@ var analyze = require('../lib/analyze');
 var treeify = require('../lib/tree').ify;
 var variables = require('../lib/variables');
 
-
 suite(variables.find, {
-    'a': {},
-    '@a': {},
-    '@a = 2': {},
-    '@a: 2': {'@a': '2'},
-    '@a : 2': {'@a': '2'}
-}, function(a) {return [treeify(analyze([a]))];});
+  'a': {},
+  '@a': {},
+  '@a = 2': {},
+  '@a: 2': {
+    '@a': '2'
+  },
+  '@a : 2': {
+    '@a': '2'
+  }
+}, function(a) {
+  return [treeify(analyze([a]))];
+});
