@@ -2,7 +2,7 @@
   "name": "mocss",
   "description": "Yet another CSS preprocessor",
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "dependencies": {
     "minimist": "^1.2.0"
   },
