@@ -1,2 +1,2 @@
-Execute "demo.sh" to see some example output.
+Run `input` files individually through `mocss` CLI to get `output`.
 
